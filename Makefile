@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Auto generated from pygitrepo 0.0.21
 #
 # This Makefile is a dev-ops tool set.
 # Compatible with:
@@ -22,12 +23,16 @@
 #         |--- create_doctree.py (a tools automatically build doc tree)
 #     |--- tests (unittest dir)
 #         |--- all.py (run all test from python)
+#         |--- ... (other test)
 #     |--- README.rst (readme file)
 #     |--- release-history.rst
 #     |--- setup.py (installation behavior definition)
-#     |--- requirements.txt
+#     |--- requirements.txt (dependencies)
+#     |--- requirements-dev.txt (dependencies for dev)
+#     |--- requirements-doc.txt (dependencies for doc)
+#     |--- requirements-test.txt (dependencies for test)
 #     |--- LICENSE.txt
-#     |--- MANIFEST.in
+#     |--- MANIFEST.in (specified files need to be included in source code archive)
 #     |--- tox.ini (tox setting)
 #     |--- .travis.yml (travis-ci setting)
 #     |--- .coveragerc (code coverage text setting)
@@ -59,10 +64,9 @@ PY_VER_MICRO="13"
 
 #  Other Python Version You Want to Test With
 # (Only useful when you use tox locally)
-TEST_PY_VER2="3.4.6"
-TEST_PY_VER3="3.5.3"
-TEST_PY_VER4="3.6.2"
-TEST_PY_VER5=""
+TEST_PY_VER3="3.4.6"
+TEST_PY_VER4="3.5.3"
+TEST_PY_VER5="3.6.2"
 
 # Virtualenv Name
 VENV_NAME="${PACKAGE_NAME}_venv"
@@ -71,7 +75,7 @@ VENV_NAME="${PACKAGE_NAME}_venv"
 USE_PYENV="Y"
 
 # S3 Bucket Name
-BUCKET_NAME="www.wbh-doc.com"
+BUCKET_NAME="www.example.com"
 
 #--- Derive Other Variable ---
 CURRENT_DIR=${shell pwd}
@@ -128,6 +132,7 @@ ifeq (${DETECTED_OS}, Linux)
     OPEN_COMMAND="open"
 endif
 
+PROFILE_FILE = "${HOME}/.bash_profile"
 
 BIN_ACTIVATE="${BIN_DIR}/activate"
 BIN_PYTHON="${BIN_DIR}/python"
@@ -135,43 +140,58 @@ BIN_PIP="${BIN_DIR}/pip"
 BIN_PYTEST="${BIN_DIR}/pytest"
 BIN_SPHINX_START="${BIN_DIR}/sphinx-quickstart"
 BIN_TWINE="${BIN_DIR}/twine"
+BIN_TOX="${BIN_DIR}/tox"
+BIN_JUPYTER="${BIN_DIR}/jupyter"
+
 
 S3_PREFIX="s3://${BUCKET_NAME}/${PACKAGE_NAME}"
-DOC_URL="http://${BUCKET_NAME}.s3.amazonaws.com/${PACKAGE_NAME}/index.html"
+RTD_DOC_URL="https://attrs_mate.readthedocs.io/index.html"
+AWS_DOC_URL="http://${BUCKET_NAME}.s3.amazonaws.com/${PACKAGE_NAME}/index.html"
 
 PY_VERSION="${PY_VER_MAJOR}.${PY_VER_MINOR}.${PY_VER_MICRO}"
 
 
 .PHONY: help
-help: ## Show this help message
+help: ## ** Show this help message
 	@perl -nle'print $& if m{^[a-zA-Z_-]+:.*?## .*$$}' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 
 #--- Make Commands ---
 .PHONY: info
-info: ## Show information about python, pip in this environment
+info: ## ** Show information about python, pip in this environment
 	@echo - venv: ${VENV_DIR_REAL} "\n"
 	@echo - python executable: ${BIN_PYTHON} "\n"
 	@echo - pip executable: ${BIN_PIP} "\n"
-	@echo - document: ${DOC_URL} "\n"
+	@echo - document on rtd: ${RTD_DOC_URL} "\n"
+	@echo - document on s3: ${AWS_DOC_URL} "\n"
 	@echo - site-packages: ${SITE_PACKAGES} "\n"
 
 
 #--- Virtualenv ---
 .PHONY: brew_install_pyenv
 brew_install_pyenv: ## Install pyenv and pyenv-virtualenv
-	brew install pyenv
-	brew install pyenv-virtualenv
+	-brew install pyenv
+	-brew install pyenv-virtualenv
+
+
+.PHONY: enable_pyenv
+enable_pyenv: ## Config $HOME/.bash_profile file
+	if ! grep -q 'export PYENV_ROOT="$$HOME/.pyenv"' "${PROFILE_FILE}" ; then\
+	    echo 'export PYENV_ROOT="$$HOME/.pyenv"' >> "${PROFILE_FILE}" ;\
+	fi
+	if ! grep -q 'export PATH="$$PYENV_ROOT/bin:$$PATH"' "${PROFILE_FILE}" ; then\
+	    echo 'export PATH="$$PYENV_ROOT/bin:$$PATH"' >> "${PROFILE_FILE}" ;\
+	fi
+	if ! grep -q 'eval "$$(pyenv init -)"' "${PROFILE_FILE}" ; then\
+	    echo 'eval "$$(pyenv init -)"' >> "${PROFILE_FILE}" ;\
+	fi
+	if ! grep -q 'eval "$$(pyenv virtualenv-init -)"' "${PROFILE_FILE}" ; then\
+	    echo 'eval "$$(pyenv virtualenv-init -)"' >> "${PROFILE_FILE}" ;\
+	fi
 
 
 .PHONY: setup_pyenv
-setup_pyenv: brew_install_pyenv ## Do some pre-setup for pyenv and pyenv-virtualenv
-	-rm ~/.bash_profile
-	echo 'export PYENV_ROOT="$$HOME/.pyenv"' >> ~/.bash_profile
-	echo 'export PATH="$$PYENV_ROOT/bin:$$PATH"' >> ~/.bash_profile
-	echo 'eval "$$(pyenv init -)"' >> ~/.bash_profile
-	echo 'eval "$$(pyenv virtualenv-init -)"' >> ~/.bash_profile
-
+setup_pyenv: brew_install_pyenv enable_pyenv ## Do some pre-setup for pyenv and pyenv-virtualenv
 	pyenv install ${PY_VERSION} -s
 	pyenv rehash
 
@@ -183,28 +203,35 @@ ifeq (${USE_PYENV}, "Y")
 	-brew install pyenv
 	-brew install pyenv-virtualenv
 
-	# Initiate Config File
-	-rm ~/.bash_profile
-	echo 'export PYENV_ROOT="$$HOME/.pyenv"' >> ~/.bash_profile
-	echo 'export PATH="$$PYENV_ROOT/bin:$$PATH"' >> ~/.bash_profile
-	echo 'eval "$$(pyenv init -)"' >> ~/.bash_profile
-	echo 'eval "$$(pyenv virtualenv-init -)"' >> ~/.bash_profile
+	# Edit Config File
+	if ! grep -q 'export PYENV_ROOT="$$HOME/.pyenv"' "${PROFILE_FILE}" ; then\
+	    echo 'export PYENV_ROOT="$$HOME/.pyenv"' >> "${PROFILE_FILE}" ;\
+	fi
+	if ! grep -q 'export PATH="$$PYENV_ROOT/bin:$$PATH"' "${PROFILE_FILE}" ; then\
+	    echo 'export PATH="$$PYENV_ROOT/bin:$$PATH"' >> "${PROFILE_FILE}" ;\
+	fi
+	if ! grep -q 'eval "$$(pyenv init -)"' "${PROFILE_FILE}" ; then\
+	    echo 'eval "$$(pyenv init -)"' >> "${PROFILE_FILE}" ;\
+	fi
+	if ! grep -q 'eval "$$(pyenv virtualenv-init -)"' "${PROFILE_FILE}" ; then\
+	    echo 'eval "$$(pyenv virtualenv-init -)"' >> "${PROFILE_FILE}" ;\
+	fi
 
 	pyenv install ${PY_VERSION} -s
 	pyenv rehash
 
-	-pyenv virtualenv ${VENV_NAME}
+	-pyenv virtualenv ${PY_VERSION} ${VENV_NAME}
 else
 	virtualenv -p ${GLOBAL_PYTHON} ${VENV_NAME}
 endif
 
 
 .PHONY: up
-up: init_venv ## Set Up the Virtual Environment
+up: init_venv ## ** Set Up the Virtual Environment
 
 
 .PHONY: clean
-clean: ## Clean Up Virtual Environment
+clean: ## ** Clean Up Virtual Environment
 ifeq (${USE_PYENV}, "Y")
 	-pyenv uninstall -f ${VENV_NAME}
 else
@@ -214,51 +241,69 @@ endif
 
 #--- Install ---
 .PHONY: uninstall
-uninstall: ## Uninstall This Package
+uninstall: ## ** Uninstall This Package
 	-${BIN_PIP} uninstall -y ${PACKAGE_NAME}
 
 
 .PHONY: install
-install: uninstall ## Install This Package via setup.py
+install: uninstall ## ** Install This Package via setup.py
 	${BIN_PIP} install .
 
 
 .PHONY: dev_install
-dev_install: uninstall ## Install This Package in Editable Mode
+dev_install: uninstall ## ** Install This Package in Editable Mode
 	${BIN_PIP} install --editable .
 
 
+.PHONY: dev_dep
+dev_dep: ## Install Development Dependencies
+	${BIN_PIP} install -r requirements-dev.txt
+
+
+.PHONY: test_dep
+test_dep: ## Install Test Dependencies
+	${BIN_PIP} install -r requirements-test.txt
+
+
+.PHONY: doc_dep
+doc_dep: ## Install Doc Dependencies
+	${BIN_PIP} install -r requirements-doc.txt
+
+
 #--- Test ---
+
 .PHONY: test
-test: dev_install ## Run test
-	${BIN_PIP} install pytest
+test: dev_install test_dep ## ** Run test
+	${BIN_PYTEST} tests -s
+
+
+.PHONY: test_only
+test_only: ## Run test without checking dependencies
 	${BIN_PYTEST} tests -s
 
 
 .PHONY: cov
-cov: dev_install ## Run Code Coverage test
-	${BIN_PIP} install pytest-cov
+cov: dev_install test_dep ## ** Run Code Coverage test
+	${BIN_PYTEST} tests -s --cov=${PACKAGE_NAME} --cov-report term --cov-report annotate:.coverage.annotate
+
+
+.PHONY: cov_only
+cov_only: ## Run Code Coverage test without checking dependencies
 	${BIN_PYTEST} tests -s --cov=${PACKAGE_NAME} --cov-report term --cov-report annotate:.coverage.annotate
 
 
 .PHONY: tox
-tox: ## Run tox
-	pip install tox
+tox: ## ** Run tox
+	${BIN_PIP} install tox
 	( \
-		pyenv local ${PY_VERSION} ${TEST_PY_VER2} ${TEST_PY_VER3} ${TEST_PY_VER4} ${TEST_PY_VER5}; \
-		tox; \
+		pyenv local 2.7.13 3.4.6 3.5.3 3.6.2; \
+		${BIN_TOX}; \
 	)
 
 
 #--- Sphinx Doc ---
-.PHONY: install_doc_deps
-install_doc_deps: ## Install Library for building Docs
-	${BIN_PIP} install sphinx==1.6.3
-	${BIN_PIP} install --upgrade docfly
-
-
 .PHONY: init_doc
-init_doc: install_doc_deps ## Initialize Sphinx Documentation Library
+init_doc: doc_dep ## Initialize Sphinx Documentation Library
 	{ \
 		cd docs; \
 		${BIN_SPHINX_START}; \
@@ -266,7 +311,7 @@ init_doc: install_doc_deps ## Initialize Sphinx Documentation Library
 
 
 .PHONY: build_doc
-build_doc: install_doc_deps dev_install ## Build Documents, force Update
+build_doc: doc_dep dev_install ## ** Build Documents, force Update
 	${BIN_PYTHON} ./docs/create_doctree.py
 	( \
 		source ${BIN_ACTIVATE}; \
@@ -276,7 +321,7 @@ build_doc: install_doc_deps dev_install ## Build Documents, force Update
 
 
 .PHONY: build_doc_again
-build_doc_again: dev_install ## Build Documents, Don't Check Dependencies
+build_doc_again: ## Build Documents, Don't Check Dependencies
 	${BIN_PYTHON} ./docs/create_doctree.py
 	( \
 		source ${BIN_ACTIVATE}; \
@@ -286,12 +331,12 @@ build_doc_again: dev_install ## Build Documents, Don't Check Dependencies
 
 
 .PHONY: view_doc
-view_doc: ## Open Documents
+view_doc: ## ** Open Documents
 	${OPEN_COMMAND} ./docs/build/html/index.html
 
 
 .PHONY: deploy_doc
-deploy_doc: ##
+deploy_doc: ## ** Deploy Document to AWS S3
 	aws s3 rm ${S3_PREFIX} --recursive
 	aws s3 sync ./docs/build/html ${S3_PREFIX}
 
@@ -302,15 +347,18 @@ clean_doc: ## Clean Existing Documents
 
 
 .PHONY: reformat
-reformat: ## Pep8 Format Source Code
-	${BIN_PIP} install --upgrade pathlib_mate
-	${BIN_PIP} install autopep8
+reformat: dev_dep ## ** Pep8 Format Source Code
 	${BIN_PYTHON} fixcode.py
 
 
 .PHONY: publish
-publish: ## Publish This Library to PyPI
-	${BIN_PIP} install 'twine>=1.5.0'
+publish: dev_dep ## ** Publish This Library to PyPI
 	${BIN_PYTHON} setup.py sdist bdist_wheel
 	${BIN_TWINE} upload dist/*
 	-rm -rf build dist .egg ${PACKAGE_NAME}.egg-info
+
+
+.PHONY: notebook
+notebook: ## ** Run jupyter notebook
+	${BIN_PIP} install jupyter
+	${BIN_JUPYTER} notebook

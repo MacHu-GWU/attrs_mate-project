@@ -25,6 +25,8 @@ def test():
     assert admin.values() == [1, "Alice", "admin"]
     assert admin.items() == [("id", 1), ("name", "Alice"), ("role", "admin")]
     assert admin.to_dict() == {"id": 1, "name": "Alice", "role": "admin"}
+    assert admin.to_OrderedDict() == {
+        "id": 1, "name": "Alice", "role": "admin"}
     assert isinstance(admin.to_OrderedDict(), OrderedDict)
 
 
