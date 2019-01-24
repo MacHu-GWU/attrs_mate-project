@@ -7,6 +7,7 @@ python:
   - "3.6"
 
 install:
+  - pip install pip --upgrade
   - pip install --editable . # Install it self
   - pip install -r requirements-test.txt # Install test dependencies
   - pip install codecov # Install coveralls
