@@ -1,1 +1,1 @@
-attrs
+attrs>=17.4.0
