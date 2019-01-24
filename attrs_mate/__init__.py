@@ -10,8 +10,7 @@ __maintainer_email__ = "husanhe@gmail.com"
 __github_username__ = "MacHu-GWU"
 
 
-import attr
 try:
-    from .mate import AttrsClass, LazyClass
+    from .mate import attr, AttrsClass, LazyClass
 except ImportError:  # pragma: no cover
     pass

@@ -1,3 +1,4 @@
 # dependencies for test
+six
 pytest==3.2.3       # test framework
 pytest-cov==2.5.1   # coverage test
