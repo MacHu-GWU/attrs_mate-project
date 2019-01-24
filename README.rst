@@ -1,3 +1,4 @@
+
 .. image:: https://travis-ci.org/MacHu-GWU/attrs_mate-project.svg?branch=master
     :target: https://travis-ci.org/MacHu-GWU/attrs_mate-project?branch=master
 
@@ -13,19 +14,51 @@
 .. image:: https://img.shields.io/pypi/pyversions/attrs_mate.svg
     :target: https://pypi.python.org/pypi/attrs_mate
 
-.. image:: https://img.shields.io/badge/Star_Me_on_GitHub!--None.svg?style=social
+.. image:: https://img.shields.io/badge/STAR_Me_on_GitHub!--None.svg?style=social
     :target: https://github.com/MacHu-GWU/attrs_mate-project
+
+------
+
+
+.. image:: https://img.shields.io/badge/Link-Document-blue.svg
+      :target: https://attrs_mate.readthedocs.io/index.html
+
+.. image:: https://img.shields.io/badge/Link-API-blue.svg
+      :target: https://attrs_mate.readthedocs.io/py-modindex.html
+
+.. image:: https://img.shields.io/badge/Link-Source_Code-blue.svg
+      :target: https://attrs_mate.readthedocs.io/py-modindex.html
+
+.. image:: https://img.shields.io/badge/Link-Install-blue.svg
+      :target: `install`_
+
+.. image:: https://img.shields.io/badge/Link-GitHub-blue.svg
+      :target: https://github.com/MacHu-GWU/attrs_mate-project
+
+.. image:: https://img.shields.io/badge/Link-Submit_Issue-blue.svg
+      :target: https://github.com/MacHu-GWU/attrs_mate-project/issues
+
+.. image:: https://img.shields.io/badge/Link-Request_Feature-blue.svg
+      :target: https://github.com/MacHu-GWU/attrs_mate-project/issues
+
+.. image:: https://img.shields.io/badge/Link-Download-blue.svg
+      :target: https://pypi.org/pypi/attrs_mate#files
 
 
 Welcome to ``attrs_mate`` Documentation
 ==============================================================================
 
-Usage: more utility methods.
+`attrs <https://www.attrs.org/en/stable/index.html>`_ might be the second widely used python library for developers (First is ``requests``). It is the ultimate weapon for writing class.
+
+``attrs_mate`` aims to bring more features to ``attrs``, and better code pattern.
+
+
+Usage1: More Utility Methods
+------------------------------------------------------------------------------
 
 .. code-block:: python
 
-    import attr
-    from attrs_mate import AttrsClass
+    from attrs_mate import attr, AttrsClass
 
     @attr.s
     class User(AttrsClass):
@@ -40,7 +73,10 @@ Usage: more utility methods.
     user.to_OrderedDict() # OrderedDict([("id", 1), ("name": "Alice")])
 
 
-Feature: allow attrs to load complex object from dict data.
+Usage2: Allow attrs to construct complex object from dict data.
+------------------------------------------------------------------------------
+
+**Plus, this is an example of nesting schema**.
 
 .. code-block:: python
 
@@ -72,11 +108,14 @@ Feature: allow attrs to load complex object from dict data.
         """
         id = attr.ib(default=None)
         profile = attr.ib(
-            convert=Profile.from_dict,
+            converter=Profile.from_dict,
+            validator=attr.validators.optional(
+                attr.validators.instance_of(Profile)
+            ),
             factory=Profile,
         )
         degrees = attr.ib(
-            convert=lambda degrees: [
+            converter=lambda degrees: [
                 Degree.from_dict(degree) for degree in degrees],
             factory=list,
         )
@@ -93,45 +132,70 @@ Feature: allow attrs to load complex object from dict data.
             Degree(name="Master", year=2006),
         ],
     )
-    people_data = people.to_dict()
 
-    # {
-    #     'id': 1,
-    #     'profile': {
-    #         'lastname': 'John', 'ssn': '123-45-6789', 'firstname': 'David'
-    #     },
-    #     'degrees': [
-    #         {'name': 'Bachelor', 'year': 2004},
-    #         {'name': 'Master', 'year': 2006}
-    #     ]
-    # }
-    print(people_data)
+    >>> people_data = people.to_dict()
+    >>> people_data
+    {
+        'id': 1,
+        'profile': {
+            'lastname': 'John', 'ssn': '123-45-6789', 'firstname': 'David'
+        },
+        'degrees': [
+            {'name': 'Bachelor', 'year': 2004},
+            {'name': 'Master', 'year': 2006}
+        ]
+    }
 
-    people = People.from_dict(people_data)
-    # People(id=1, profile=Profile(firstname='David', lastname='John', ssn='123-45-6789'), degrees=[Degree(name='Bachelor', year=2004), Degree(name='Master', year=2006)])
-    print(people)
+    >>> people = People.from_dict(people_data)
+    >>> people
+    People(id=1, profile=Profile(firstname='David', lastname='John', ssn='123-45-6789'), degrees=[Degree(name='Bachelor', year=2004), Degree(name='Master', year=2006)])
 
 
-Quick Links
+Usage3: Cached Instance and Property Attribute
 ------------------------------------------------------------------------------
 
-- .. image:: https://img.shields.io/badge/Link-Document-red.svg
-      :target: https://attrs_mate.readthedocs.io/index.html
+.. code-block:: python
 
-- .. image:: https://img.shields.io/badge/Link-API_Reference_and_Source_Code-red.svg
-      :target: https://attrs_mate.readthedocs.io/py-modindex.html
+    from attrs_mate import attr, LazyClass
 
-- .. image:: https://img.shields.io/badge/Link-Install-red.svg
-      :target: `install`_
+    @attr.s
+    class User(LazyClass): # instance are cached
+        id = attr.ib()
+        lastname = attr.ib()
+        firstname = attr.ib()
+        uuid_called_count = attr.ib(default=0)
+        fullname_called_count = attr.ib(default=0)
 
-- .. image:: https://img.shields.io/badge/Link-GitHub-blue.svg
-      :target: https://github.com/MacHu-GWU/attrs_mate-project
+        @LazyClass.lazyproperty
+        def uuid(self):
+            self.uuid_called_count += 1
+            return self.id
 
-- .. image:: https://img.shields.io/badge/Link-Submit_Issue_and_Feature_Request-blue.svg
-      :target: https://github.com/MacHu-GWU/attrs_mate-project/issues
+        @LazyClass.lazyproperty
+        def fullname(self): # property method are cached
+            self.fullname_called_count += 1
+            return "{} {}".format(self.lastname, self.firstname)
 
-- .. image:: https://img.shields.io/badge/Link-Download-blue.svg
-      :target: https://pypi.python.org/pypi/attrs_mate#downloads
+    >>> user1 = User.lazymake(id=1, lastname="David", firstname="John")
+    >>> user1.fullname_called_count
+    0 # initially, fullname never been called
+    >>> user1.fullname
+    David John
+    >>> user1.fullname_called_count
+    1 # called once
+    >>> user1.fullname
+    David John
+    >>> user1.fullname_called_count
+    1 # User.fullname() not been called
+
+    # use factory method to create new instance
+    >>> user2 = User.lazymake(id=1, lastname="David", firstname="Kim")
+    >>> id(user1) == id(user2)
+    True # since
+    >>> user2.firstname == "John"
+    True
+    >>> user2.fullname_called_count
+    1 # already been called once, because it is actually user1
 
 
 .. _install:

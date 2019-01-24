@@ -1,7 +1,6 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __short_description__ = "A plugin extends power of attrs library."
 __license__ = "MIT"
 __author__ = "Sanhe Hu"
@@ -11,7 +10,8 @@ __maintainer_email__ = "husanhe@gmail.com"
 __github_username__ = "MacHu-GWU"
 
 
+import attr
 try:
-    from .mate import AttrsClass
+    from .mate import AttrsClass, LazyClass
 except ImportError:  # pragma: no cover
     pass

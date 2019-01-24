@@ -57,14 +57,14 @@ class People(AttrsClass):
     """
     id = attr.ib(default=None)
     profile = attr.ib(
-        convert=Profile.from_dict,
+        converter=Profile.from_dict,
         validator=attr.validators.optional(
             attr.validators.instance_of(Profile)
         ),
         factory=Profile,
     )
     degrees = attr.ib(
-        convert=lambda degrees: [
+        converter=lambda degrees: [
             Degree.from_dict(degree) for degree in degrees],
         factory=list,
     )
