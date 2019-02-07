@@ -148,7 +148,9 @@ class LazyClass(AttrsClass):
         obj = cls(*args, **kwargs)
         try:
             if obj.uuid in cls._instance_cache[obj._classname]:
-                return cls._instance_cache[obj._classname][obj.uuid]
+                obj_from_cache = cls._instance_cache[obj._classname][obj.uuid]
+                del obj
+                return obj_from_cache
             else:
                 cls._instance_cache[obj._classname][obj.uuid] = obj
                 return obj
