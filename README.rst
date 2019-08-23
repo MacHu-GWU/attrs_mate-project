@@ -110,7 +110,7 @@ Usage2: Allow attrs to construct complex object from dict data.
         profile = Profile.ib_nested() # default Nested Schema Validator and Converter
         degrees = Degree.ib_list() # default Nested Schema Validator and Converter
 
-    people = People(
+    >>> people = People(
         id=1,
         profile=Profile(
             firstname="David",
@@ -139,6 +139,23 @@ Usage2: Allow attrs to construct complex object from dict data.
     >>> people = People.from_dict(people_data)
     >>> people
     People(id=1, profile=Profile(firstname='David', lastname='John', ssn='123-45-6789'), degrees=[Degree(name='Bachelor', year=2004), Degree(name='Master', year=2006)])
+
+Or you can just pass nested schema in dictionary, it works the same:
+
+.. code-block:: python
+
+    >>> people = People(
+        id=1,
+        profile=dict(
+            firstname="David",
+            lastname="John",
+            ssn="123-45-6789",
+        ),
+        degrees=[
+            dict(name="Bachelor", year=2004),
+            dict(name="Master", year=2006),
+        ],
+    )
 
 
 Usage3: Cached Instance and Property Attribute

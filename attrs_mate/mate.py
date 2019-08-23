@@ -67,7 +67,7 @@ class AttrsClass(object):
             return None
         elif isinstance(dct_or_obj, dict):
             return cls(**dct_or_obj)
-        else:
+        else:  # pragma: no cover
             return TypeError
 
     @classmethod
@@ -82,7 +82,7 @@ class AttrsClass(object):
             return [cls.from_dict(item) for item in list_of_dct_or_obj]
         elif list_of_dct_or_obj is None:
             return list()
-        else:
+        else:  # pragma: no cover
             return TypeError
 
     @classmethod
