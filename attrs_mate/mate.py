@@ -10,23 +10,29 @@ This module implements:
 import attr
 import collections
 
+try:
+    from typing import Union, List
+except:
+    pass
+
 
 class AttrsClass(object):
     """
     A mixins class provideing more utility methods.
     """
 
-    def keys(self):
+    @classmethod
+    def keys(cls):
         """
         Fieldname list.
         """
-        return [a.name for a in self.__attrs_attrs__]
+        return [field.name for field in attr.fields(cls)]
 
     def values(self):
         """
         Value list.
         """
-        return [getattr(self, a.name) for a in self.__attrs_attrs__]
+        return [getattr(self, field_name) for field_name in self.keys()]
 
     def items(self):
         """
@@ -50,11 +56,53 @@ class AttrsClass(object):
     def from_dict(cls, dct_or_obj):
         """
         Construct an instance from dictionary data.
+
+        :type dct_or_obj: Union[dict, None]
+        :rtype: cls
         """
         if isinstance(dct_or_obj, cls):
             return dct_or_obj
-        else:
+        elif dct_or_obj is None:
+            return None
+        elif isinstance(dct_or_obj, dict):
             return cls(**dct_or_obj)
+        else:
+            return TypeError
+
+    @classmethod
+    def _from_list(cls, list_of_dct_or_obj):
+        """
+        Construct list of instance from list of dictionary data.
+
+        :type list_of_dct_or_obj: Union[List[cls], List[dict], None]
+        :rtype: List[cls]
+        """
+        if isinstance(list_of_dct_or_obj, list):
+            return [cls.from_dict(item) for item in list_of_dct_or_obj]
+        elif list_of_dct_or_obj is None:
+            return list()
+        else:
+            return TypeError
+
+    @classmethod
+    def ib_nested(cls, **kwargs):
+        if "converter" not in kwargs:
+            kwargs["converter"] = cls.from_dict
+        if "validator" not in kwargs:
+            kwargs["validator"] = attr.validators.optional(
+                attr.validators.instance_of(cls)
+            )
+        if "default" not in kwargs:
+            kwargs["default"] = None
+        return attr.ib(**kwargs)
+
+    @classmethod
+    def ib_list(cls, **kwargs):
+        if "converter" not in kwargs:
+            kwargs["converter"] = cls._from_list
+        if "factory" not in kwargs:
+            kwargs["factory"] = list
+        return attr.ib(**kwargs)
 
 
 DictClass = dict
