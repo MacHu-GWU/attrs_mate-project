@@ -4,7 +4,7 @@ Release and Version History
 ==============================================================================
 
 
-0.0.5 (TODO)
+0.0.6 (TODO)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
 
@@ -13,6 +13,21 @@ Release and Version History
 **Bugfixes**
 
 **Miscellaneous**
+
+
+0.0.5 (2019-08-22)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Features and Improvements**
+
+- add ``AttrClss.ib_str()``, ``AttrClss.ib_int()``, ``AttrClss.ib_nested()``, ``AttrClss.ib_list_of_nested()``
+
+**Minor Improvements**
+
+**Bugfixes**
+
+**Miscellaneous**
+
+- requires attrs >= 19.1.0 to make ``attr.validators.deep_iterable`` works
 
 
 0.0.4 (2019-02-07)

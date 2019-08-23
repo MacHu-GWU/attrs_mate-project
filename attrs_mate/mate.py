@@ -7,6 +7,7 @@ This module implements:
 - :class:`LazyClass`
 """
 
+import six
 import attr
 import collections
 
@@ -85,6 +86,23 @@ class AttrsClass(object):
             return TypeError
 
     @classmethod
+    def ib_str(cls, **kwargs):
+        if "validator" not in kwargs:
+            kwargs["validator"] = attr.validators.optional(
+                attr.validators.instance_of(six.string_types)
+            )
+        return attr.ib(**kwargs)
+
+    @classmethod
+    def ib_int(cls, **kwargs):
+        if "validator" not in kwargs:
+            kwargs["validator"] = attr.validators.optional(
+                attr.validators.instance_of(six.integer_types)
+            )
+        return attr.ib(**kwargs)
+
+    # complex object
+    @classmethod
     def ib_nested(cls, **kwargs):
         if "converter" not in kwargs:
             kwargs["converter"] = cls.from_dict
@@ -97,9 +115,14 @@ class AttrsClass(object):
         return attr.ib(**kwargs)
 
     @classmethod
-    def ib_list(cls, **kwargs):
+    def ib_list_of_nested(cls, **kwargs):
         if "converter" not in kwargs:
             kwargs["converter"] = cls._from_list
+        if "validator" not in kwargs:
+            kwargs["validator"] = attr.validators.deep_iterable(
+                member_validator=attr.validators.instance_of(cls),
+                iterable_validator=attr.validators.instance_of(list),
+            )
         if "factory" not in kwargs:
             kwargs["factory"] = list
         return attr.ib(**kwargs)

@@ -50,7 +50,7 @@ Welcome to ``attrs_mate`` Documentation
 
 `attrs <https://www.attrs.org/en/stable/index.html>`_ might be the second widely used python library for developers (First is ``requests``). It is the ultimate weapon for writing class.
 
-``attrs_mate`` aims to bring more features to ``attrs``, and better code pattern.
+``attrs_mate`` aims to bring more features to ``attrs``, less code, and better code pattern.
 
 
 Usage1: More Utility Methods
@@ -89,15 +89,15 @@ Usage2: Allow attrs to construct complex object from dict data.
         """
         firstname, lastname, ssn are generic data type field.
         """
-        firstname = attr.ib(default=None)
-        lastname = attr.ib(default=None)
-        ssn = attr.ib(default=None)
+        firstname = AttrsClass.ib_str() # default String Validator
+        lastname = AttrsClass.ib_str()
+        ssn = AttrsClass.ib_str()
 
 
     @attr.s
     class Degree(AttrsClass):
-        name = attr.ib(default=None)
-        year = attr.ib(default=None)
+        name = AttrsClass.ib_str()
+        year = AttrsClass.ib_int() # default Integer Validator
 
 
     @attr.s
@@ -106,19 +106,9 @@ Usage2: Allow attrs to construct complex object from dict data.
         - ``profile`` is nested field.
         - ``degrees`` is collection type field.
         """
-        id = attr.ib(default=None)
-        profile = attr.ib(
-            converter=Profile.from_dict,
-            validator=attr.validators.optional(
-                attr.validators.instance_of(Profile)
-            ),
-            factory=Profile,
-        )
-        degrees = attr.ib(
-            converter=lambda degrees: [
-                Degree.from_dict(degree) for degree in degrees],
-            factory=list,
-        )
+        id = AttrsClass.ib_int()
+        profile = Profile.ib_nested() # default Nested Schema Validator and Converter
+        degrees = Degree.ib_list() # default Nested Schema Validator and Converter
 
     people = People(
         id=1,

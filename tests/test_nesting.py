@@ -12,35 +12,15 @@ class Profile(AttrsClass):
     """
     firstname, lastname, ssn are generic data type field.
     """
-    firstname = attr.ib(
-        validator=attr.validators.optional(
-            attr.validators.instance_of(six.string_types)
-        ),
-    )
-    lastname = attr.ib(
-        validator=attr.validators.optional(
-            attr.validators.instance_of(six.string_types)
-        ),
-    )
-    ssn = attr.ib(
-        validator=attr.validators.optional(
-            attr.validators.instance_of(six.string_types)
-        ),
-    )
+    firstname = AttrsClass.ib_str()
+    lastname = AttrsClass.ib_str()
+    ssn = AttrsClass.ib_str()
 
 
 @attr.s
 class Degree(AttrsClass):
-    name = attr.ib(
-        validator=attr.validators.optional(
-            attr.validators.instance_of(six.string_types)
-        ),
-    )
-    year = attr.ib(
-        validator=attr.validators.optional(
-            attr.validators.instance_of(six.integer_types)
-        ),
-    )
+    name = AttrsClass.ib_str()
+    year = AttrsClass.ib_int()
 
 
 @attr.s
@@ -49,13 +29,30 @@ class People(AttrsClass):
     - ``profile`` is nested field.
     - ``degrees`` is collection type field.
     """
-    id = attr.ib(default=None)
+    id = AttrsClass.ib_int()
     profile = Profile.ib_nested()
-    degrees = Degree.ib_list()
+    degrees = Degree.ib_list_of_nested()
 
 
 class TestNesting(object):
-    def test_from_dict(self):
+    def test_from_dict1(self):
+        people = People(
+            id=1,
+            profile=dict(
+                firstname="David",
+                lastname="John",
+                ssn="123-45-6789",
+            ),
+            degrees=[
+                dict(name="Bachelor", year=2004),
+                dict(name="Master", year=2006),
+            ],
+        )
+        people_data = people.to_dict()
+        people1 = People.from_dict(people_data)
+        assert people == people1
+
+    def test_from_dict2(self):
         people = People(
             id=1,
             profile=Profile(
@@ -72,8 +69,8 @@ class TestNesting(object):
         people1 = People.from_dict(people_data)
         assert people == people1
 
-    def test_profile_degrees(self):
-        people = People()
+    def test_profile_degrees_default_value(self):
+        people = People(id=1)
         assert people.profile is None
         assert people.degrees == list()
 
