@@ -1,6 +1,6 @@
 
-.. image:: https://travis-ci.org/MacHu-GWU/attrs_mate-project.svg?branch=master
-    :target: https://travis-ci.org/MacHu-GWU/attrs_mate-project?branch=master
+.. image:: https://github.com/MacHu-GWU/attrs_mate-project/workflows/CI/badge.svg
+    :target: https://github.com/MacHu-GWU/attrs_mate-project/actions?query=workflow:CI
 
 .. image:: https://codecov.io/gh/MacHu-GWU/attrs_mate-project/branch/master/graph/badge.svg
   :target: https://codecov.io/gh/MacHu-GWU/attrs_mate-project
@@ -48,7 +48,7 @@
 Welcome to ``attrs_mate`` Documentation
 ==============================================================================
 
-`attrs <https://www.attrs.org/en/stable/index.html>`_ might be the second widely used python library for developers (First is ``requests``). It is the ultimate weapon for writing class.
+`attrs <https://www.attrs.org/en/stable/index.html>`_ makes writing class a lot of more fun!
 
 ``attrs_mate`` aims to bring more features to ``attrs``, less code, and better code pattern.
 

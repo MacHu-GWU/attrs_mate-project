@@ -4,7 +4,7 @@ Release and Version History
 ==============================================================================
 
 
-0.0.6 (TODO)
+1.0.2 (TODO)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
 
@@ -13,6 +13,25 @@ Release and Version History
 **Bugfixes**
 
 **Miscellaneous**
+
+
+1.0.1 (2021-06-24)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Features and Improvements**
+
+- Use type hint
+
+**Minor Improvements**
+
+- More test case for nested object
+
+**Bugfixes**
+
+**Miscellaneous**
+
+- Drop support for Python2.7, only tested on Python3.6 +
+- move CI from travis to GitHub CI
+- add test on windows
 
 
 0.0.5 (2019-08-22)
