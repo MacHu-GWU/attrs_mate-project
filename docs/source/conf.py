@@ -194,18 +194,6 @@ try:
 except:
     pass
 
-# Add data for Jinja2
-try:
-    from attrs_mate.docs import doc_data
-except:
-    doc_data = dict()
-
-jinja_contexts = {
-    "doc_data": {
-        "doc_data": doc_data,
-    },
-}
-
 # Api Reference Doc
 import docfly
 
