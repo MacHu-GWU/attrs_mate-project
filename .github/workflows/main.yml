@@ -18,8 +18,13 @@ jobs:
       USING_COVERAGE: "3.6,3.7,3.8,3.9"
     strategy:
       matrix:
+#        os: ["ubuntu-latest", "windows-latest"]
         os: ["ubuntu-latest", ]
-        python-version: ["3.6", "3.7", "3.8", "3.9"]
+#        python-version: ["3.6", "3.7", "3.8", "3.9"]
+        python-version: ["3.6", ]
+        exclude:
+          - os: windows-latest # this is a useless exclude rules for demonstration use only
+            python-version: 2.7
     steps:
       - uses: "actions/checkout@v2" # https://github.com/marketplace/actions/checkout
       - uses: "actions/setup-python@v2" # https://github.com/marketplace/actions/setup-python
@@ -43,7 +48,7 @@ jobs:
           pip install .
           pip install -r requirements-test.txt
       - name: "Run pytest"
-        run: "python -m pytest tests --cov=pathlib_mate"
+        run: "python -m pytest tests --cov=attrs_mate"
 
       - name: "Upload coverage to Codecov"
         if: "contains(env.USING_COVERAGE, matrix.python-version)"
