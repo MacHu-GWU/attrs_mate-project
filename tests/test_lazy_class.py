@@ -35,20 +35,20 @@ class User(LazyClass):
         return "{} {}".format(self.lastname, self.firstname)
 
 
-class TestLazyClassSampleUsage(object):
+class TestLazyClassSampleUsage:
     def test(self):
         user1 = User.lazymake(id=1, lastname="David", firstname="John")
         assert user1.fullname_called_count == 0
-        user1.fullname
+        _ = user1.fullname
         assert user1.fullname_called_count == 1
-        user1.fullname
+        _ = user1.fullname
         assert user1.fullname_called_count == 1
 
         user2 = User.lazymake(id=1, lastname="David", firstname="Kim")
         assert id(user1) == id(user2)
         assert user2.firstname == "John"
         assert user2.fullname_called_count == 1
-        user2.fullname
+        _ = user2.fullname
         assert user2.fullname_called_count == 1
 
         user3 = User.lazymake(id=2, lastname="David", firstname="John")
@@ -60,7 +60,7 @@ class Foo(LazyClass):
     id = attr.ib()
 
 
-class TestLazyClassWrongUsage(object):
+class TestLazyClassWrongUsage:
     def test(self):
         with pytest.raises(NotImplementedError):
             foo = Foo.lazymake(id=1)

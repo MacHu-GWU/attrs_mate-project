@@ -7,16 +7,11 @@ This module implements:
 - :class:`LazyClass`
 """
 
-import six
 import attr
 import collections
 
-try:
-    from typing import Union, List
-except:
-    pass
 
-
+@attr.s
 class AttrsClass(object):
     """
     A mixins class provideing more utility methods.
@@ -89,7 +84,7 @@ class AttrsClass(object):
     def ib_str(cls, **kwargs):
         if "validator" not in kwargs:
             kwargs["validator"] = attr.validators.optional(
-                attr.validators.instance_of(six.string_types)
+                attr.validators.instance_of(str)
             )
         return attr.ib(**kwargs)
 
@@ -97,7 +92,7 @@ class AttrsClass(object):
     def ib_int(cls, **kwargs):
         if "validator" not in kwargs:
             kwargs["validator"] = attr.validators.optional(
-                attr.validators.instance_of(six.integer_types)
+                attr.validators.instance_of(int)
             )
         return attr.ib(**kwargs)
 
@@ -137,6 +132,7 @@ This might work too::
 """
 
 
+@attr.s
 class LazyClass(AttrsClass):
     """
     Inheriting from this class gives you a factory method

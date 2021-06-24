@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-import six
 import attr
 from attrs_mate import AttrsClass
 
@@ -34,8 +33,11 @@ class People(AttrsClass):
     degrees = Degree.ib_list_of_nested()
 
 
-class TestNesting(object):
+class TestNesting:
     def test_from_dict1(self):
+        """
+        nested value is dict.
+        """
         people = People(
             id=1,
             profile=dict(
@@ -50,9 +52,14 @@ class TestNesting(object):
         )
         people_data = people.to_dict()
         people1 = People.from_dict(people_data)
+        people1_data = people1.to_dict()
         assert people == people1
+        assert people_data == people1_data
 
     def test_from_dict2(self):
+        """
+        nested value is already object
+        """
         people = People(
             id=1,
             profile=Profile(
@@ -67,7 +74,24 @@ class TestNesting(object):
         )
         people_data = people.to_dict()
         people1 = People.from_dict(people_data)
+        people1_data = people1.to_dict()
         assert people == people1
+        assert people_data == people1_data
+
+    def test_from_dict3(self):
+        """
+        nested value is None.
+        """
+        people = People(
+            id=1,
+            profile=None,
+            degrees=None,
+        )
+        people_data = people.to_dict()
+        people1 = People.from_dict(people_data)
+        people1_data = people1.to_dict()
+        assert people == people1
+        assert people_data == people1_data
 
     def test_profile_degrees_default_value(self):
         people = People(id=1)
