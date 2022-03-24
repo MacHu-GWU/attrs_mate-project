@@ -8,11 +8,15 @@ This module implements:
 """
 
 import collections
-from typing import Type, List, Union
+from typing import TypeVar, List, Union
 from datetime import date, datetime
 
 import attr
 import attr.validators as vs
+
+T = TypeVar("T")
+K = TypeVar("K")
+V = TypeVar("V")
 
 
 @attr.define
@@ -88,9 +92,9 @@ class AttrsClass(object):
     # Generic Type
     # --------------------------------------------------------------------------
     @classmethod
-    def _typed_ib(
+    def ib_generic(
         cls,
-        type_,
+        type_: T,
         nullable=True,
         **kwargs
     ):
@@ -107,37 +111,37 @@ class AttrsClass(object):
     def ib_str(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib(str, nullable=nullable, **kwargs)
+        return cls.ib_generic(str, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_int(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib(int, nullable=nullable, **kwargs)
+        return cls.ib_generic(int, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_float(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib(float, nullable=nullable, **kwargs)
+        return cls.ib_generic(float, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_bool(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib(bool, nullable=nullable, **kwargs)
+        return cls.ib_generic(bool, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_date(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib(date, nullable=nullable, **kwargs)
+        return cls.ib_generic(date, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_datetime(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib(datetime, nullable=nullable, **kwargs)
+        return cls.ib_generic(datetime, nullable=nullable, **kwargs)
 
     # --------------------------------------------------------------------------
     # Collection Type
@@ -146,33 +150,33 @@ class AttrsClass(object):
     def ib_list(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib(list, nullable=nullable, **kwargs)
+        return cls.ib_generic(list, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_tuple(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib(tuple, nullable=nullable, **kwargs)
+        return cls.ib_generic(tuple, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_set(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib(set, nullable=nullable, **kwargs)
+        return cls.ib_generic(set, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_dict(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib(dict, nullable=nullable, **kwargs)
+        return cls.ib_generic(dict, nullable=nullable, **kwargs)
 
     # --------------------------------------------------------------------------
     # List of Generic Type
     # --------------------------------------------------------------------------
     @classmethod
-    def _typed_ib_list_of_generic(
+    def ib_list_of_generic(
         cls,
-        member_type,
+        member_type: T,
         nullable=True,
         **kwargs
     ):
@@ -196,37 +200,73 @@ class AttrsClass(object):
     def ib_list_of_str(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib_list_of_generic(str, nullable=nullable, **kwargs)
+        return cls.ib_list_of_generic(str, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_list_of_int(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib_list_of_generic(int, nullable=nullable, **kwargs)
+        return cls.ib_list_of_generic(int, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_list_of_float(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib_list_of_generic(float, nullable=nullable, **kwargs)
+        return cls.ib_list_of_generic(float, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_list_of_bool(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib_list_of_generic(bool, nullable=nullable, **kwargs)
+        return cls.ib_list_of_generic(bool, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_list_of_date(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib_list_of_generic(date, nullable=nullable, **kwargs)
+        return cls.ib_list_of_generic(date, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_list_of_datetime(cls, nullable=True, **kwargs):
         """
         """
-        return cls._typed_ib_list_of_generic(datetime, nullable=nullable, **kwargs)
+        return cls.ib_list_of_generic(datetime, nullable=nullable, **kwargs)
+
+    # --------------------------------------------------------------------------
+    # Dict of Generic Type
+    # --------------------------------------------------------------------------
+    @classmethod
+    def ib_dict_of_generic(
+        cls,
+        key_type: K,
+        value_type: V,
+        nullable=True,
+        value_nullable=True,
+        **kwargs
+    ):
+        """
+        """
+        if "validator" not in kwargs:
+            if value_nullable:
+                key_validator = vs.optional(vs.instance_of(key_type))
+                value_validator = vs.optional(vs.instance_of(value_type))
+            else:
+                key_validator = vs.instance_of(key_type)
+                value_validator = vs.instance_of(value_type)
+            if nullable:
+                kwargs["validator"] = vs.optional(
+                    vs.deep_mapping(
+                        key_validator=key_validator,
+                        value_validator=value_validator,
+                    )
+                )
+            else:
+                kwargs["validator"] = vs.deep_mapping(
+                    key_validator=key_validator,
+                    value_validator=value_validator,
+                )
+
+        return attr.field(**kwargs)
 
     # --------------------------------------------------------------------------
     # Nested Type

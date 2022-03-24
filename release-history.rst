@@ -4,7 +4,7 @@ Release and Version History
 ==============================================================================
 
 
-1.0.2 (TODO)
+1.0.3 (TODO)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
 
@@ -15,15 +15,20 @@ Release and Version History
 **Miscellaneous**
 
 
+1.0.2 (2022-03-24)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Features and Improvements**
+
+- add :meth:`attrs_mate.mate.AttrsClass.ib_generic`
+- add :meth:`attrs_mate.mate.AttrsClass.ib_list_of_generic`
+- add :meth:`attrs_mate.mate.AttrsClass.ib_dict_of_generic`
+
+
 1.0.1 (2022-03-24)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
 
 - more typed field with validators.
-
-**Minor Improvements**
-
-**Bugfixes**
 
 **Miscellaneous**
 
@@ -40,8 +45,6 @@ Release and Version History
 
 - More test case for nested object
 
-**Bugfixes**
-
 **Miscellaneous**
 
 - Drop support for Python2.7, only tested on Python3.6 +
@@ -54,10 +57,6 @@ Release and Version History
 **Features and Improvements**
 
 - add ``AttrClss.ib_str()``, ``AttrClss.ib_int()``, ``AttrClss.ib_nested()``, ``AttrClss.ib_list_of_nested()``
-
-**Minor Improvements**
-
-**Bugfixes**
 
 **Miscellaneous**
 
