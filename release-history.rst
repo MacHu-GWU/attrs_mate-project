@@ -4,7 +4,7 @@ Release and Version History
 ==============================================================================
 
 
-1.0.3 (TODO)
+1.0.2 (TODO)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
 
@@ -15,7 +15,7 @@ Release and Version History
 **Miscellaneous**
 
 
-1.0.2 (2022-03-24)
+1.0.1 (2022-03-24)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
 
@@ -30,7 +30,7 @@ Release and Version History
 - widely use the new API ``@attr.define`` and ``attr.field`` to class definition.
 
 
-1.0.1 (2021-06-24)
+1.0.0 (2021-06-24)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
 

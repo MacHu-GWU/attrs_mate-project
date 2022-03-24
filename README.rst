@@ -19,11 +19,10 @@
 
 ------
 
-
-.. image:: https://img.shields.io/badge/Link-Document-blue.svg
+.. image:: https://img.shields.io/badge/Link-Document-orange.svg
       :target: https://attrs_mate.readthedocs.io/index.html
 
-.. image:: https://img.shields.io/badge/Link-API-blue.svg
+.. image:: https://img.shields.io/badge/Link-API-orange.svg
       :target: https://attrs_mate.readthedocs.io/py-modindex.html
 
 .. image:: https://img.shields.io/badge/Link-Source_Code-blue.svg
@@ -47,6 +46,12 @@
 
 Welcome to ``attrs_mate`` Documentation
 ==============================================================================
+
+.. contents::
+    :class: this-will-duplicate-information-and-it-is-still-useful-here
+    :depth: 1
+    :local:
+
 
 `attrs <https://www.attrs.org/en/stable/index.html>`_ makes writing class a lot of more fun!
 

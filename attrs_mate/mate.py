@@ -55,7 +55,7 @@ class AttrsClass(object):
     @classmethod
     def from_dict(
         cls,
-        dct_or_obj: [dict, 'AttrsClass', None],
+        dct_or_obj: Union[dict, 'AttrsClass', None],
     ) -> Union['AttrsClass', None]:
         """
         Construct an instance from dictionary data.
