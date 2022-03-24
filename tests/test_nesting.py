@@ -6,7 +6,7 @@ from attrs_mate import AttrsClass
 
 
 # --- The correct way to implement nested schema and collection field ---
-@attr.s
+@attr.define
 class Profile(AttrsClass):
     """
     firstname, lastname, ssn are generic data type field.
@@ -16,13 +16,13 @@ class Profile(AttrsClass):
     ssn = AttrsClass.ib_str()
 
 
-@attr.s
+@attr.define
 class Degree(AttrsClass):
     name = AttrsClass.ib_str()
     year = AttrsClass.ib_int()
 
 
-@attr.s
+@attr.define
 class People(AttrsClass):
     """
     - ``profile`` is nested field.

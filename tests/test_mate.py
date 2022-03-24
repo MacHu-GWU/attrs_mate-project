@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import pytest
@@ -8,15 +7,15 @@ from attrs_mate.mate import AttrsClass
 from collections import OrderedDict
 
 
-@attr.s
+@attr.define
 class User(AttrsClass):
-    id = attr.ib()
-    name = attr.ib()
+    id = attr.field()
+    name = attr.field()
 
 
-@attr.s
+@attr.define
 class DBUser(User):
-    role = attr.ib()
+    role = attr.field()
 
 
 def test():

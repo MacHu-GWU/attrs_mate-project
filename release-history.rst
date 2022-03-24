@@ -4,7 +4,7 @@ Release and Version History
 ==============================================================================
 
 
-1.0.2 (TODO)
+1.0.3 (TODO)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
 
@@ -13,6 +13,21 @@ Release and Version History
 **Bugfixes**
 
 **Miscellaneous**
+
+
+1.0.2 (2022-03-24)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Features and Improvements**
+
+- more typed field with validators.
+
+**Minor Improvements**
+
+**Bugfixes**
+
+**Miscellaneous**
+
+- widely use the new API ``@attr.define`` and ``attr.field`` to class definition.
 
 
 1.0.1 (2021-06-24)

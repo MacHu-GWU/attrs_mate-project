@@ -7,11 +7,15 @@ This module implements:
 - :class:`LazyClass`
 """
 
-import attr
 import collections
+from typing import Type, List, Union
+from datetime import date, datetime
+
+import attr
+import attr.validators as vs
 
 
-@attr.s
+@attr.define
 class AttrsClass(object):
     """
     A mixins class provideing more utility methods.
@@ -49,12 +53,12 @@ class AttrsClass(object):
         return attr.asdict(self, dict_factory=collections.OrderedDict)
 
     @classmethod
-    def from_dict(cls, dct_or_obj):
+    def from_dict(
+        cls,
+        dct_or_obj: [dict, 'AttrsClass', None],
+    ) -> Union['AttrsClass', None]:
         """
         Construct an instance from dictionary data.
-
-        :type dct_or_obj: Union[dict, None]
-        :rtype: cls
         """
         if isinstance(dct_or_obj, cls):
             return dct_or_obj
@@ -63,64 +67,202 @@ class AttrsClass(object):
         elif isinstance(dct_or_obj, dict):
             return cls(**dct_or_obj)
         else:  # pragma: no cover
-            return TypeError
+            raise TypeError
 
     @classmethod
-    def _from_list(cls, list_of_dct_or_obj):
+    def _from_list(
+        cls,
+        list_of_dct_or_obj: List[Union[dict, 'AttrsClass', None]],
+    ) -> List[Union['AttrsClass', None]]:
         """
         Construct list of instance from list of dictionary data.
-
-        :type list_of_dct_or_obj: Union[List[cls], List[dict], None]
-        :rtype: List[cls]
         """
         if isinstance(list_of_dct_or_obj, list):
             return [cls.from_dict(item) for item in list_of_dct_or_obj]
         elif list_of_dct_or_obj is None:
             return list()
         else:  # pragma: no cover
-            return TypeError
+            raise TypeError
+
+    # --------------------------------------------------------------------------
+    # Generic Type
+    # --------------------------------------------------------------------------
+    @classmethod
+    def _typed_ib(
+        cls,
+        type_,
+        nullable=True,
+        **kwargs
+    ):
+        if "validator" not in kwargs:
+            if nullable:
+                kwargs["validator"] = vs.optional(
+                    vs.instance_of(type_)
+                )
+            else:
+                kwargs["validator"] = vs.instance_of(type_)
+        return attr.field(**kwargs)
 
     @classmethod
-    def ib_str(cls, **kwargs):
-        if "validator" not in kwargs:
-            kwargs["validator"] = attr.validators.optional(
-                attr.validators.instance_of(str)
-            )
-        return attr.ib(**kwargs)
+    def ib_str(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib(str, nullable=nullable, **kwargs)
 
     @classmethod
-    def ib_int(cls, **kwargs):
-        if "validator" not in kwargs:
-            kwargs["validator"] = attr.validators.optional(
-                attr.validators.instance_of(int)
-            )
-        return attr.ib(**kwargs)
+    def ib_int(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib(int, nullable=nullable, **kwargs)
 
-    # complex object
+    @classmethod
+    def ib_float(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib(float, nullable=nullable, **kwargs)
+
+    @classmethod
+    def ib_bool(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib(bool, nullable=nullable, **kwargs)
+
+    @classmethod
+    def ib_date(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib(date, nullable=nullable, **kwargs)
+
+    @classmethod
+    def ib_datetime(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib(datetime, nullable=nullable, **kwargs)
+
+    # --------------------------------------------------------------------------
+    # Collection Type
+    # --------------------------------------------------------------------------
+    @classmethod
+    def ib_list(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib(list, nullable=nullable, **kwargs)
+
+    @classmethod
+    def ib_tuple(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib(tuple, nullable=nullable, **kwargs)
+
+    @classmethod
+    def ib_set(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib(set, nullable=nullable, **kwargs)
+
+    @classmethod
+    def ib_dict(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib(dict, nullable=nullable, **kwargs)
+
+    # --------------------------------------------------------------------------
+    # List of Generic Type
+    # --------------------------------------------------------------------------
+    @classmethod
+    def _typed_ib_list_of_generic(
+        cls,
+        member_type,
+        nullable=True,
+        **kwargs
+    ):
+        if "validator" not in kwargs:
+            if nullable:
+                kwargs["validator"] = vs.optional(
+                    vs.deep_iterable(
+                        member_validator=vs.instance_of(member_type),
+                        iterable_validator=vs.instance_of(list),
+                    )
+                )
+            else:
+                kwargs["validator"] = vs.deep_iterable(
+                    member_validator=vs.instance_of(member_type),
+                    iterable_validator=vs.instance_of(list),
+                )
+
+        return attr.field(**kwargs)
+
+    @classmethod
+    def ib_list_of_str(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib_list_of_generic(str, nullable=nullable, **kwargs)
+
+    @classmethod
+    def ib_list_of_int(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib_list_of_generic(int, nullable=nullable, **kwargs)
+
+    @classmethod
+    def ib_list_of_float(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib_list_of_generic(float, nullable=nullable, **kwargs)
+
+    @classmethod
+    def ib_list_of_bool(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib_list_of_generic(bool, nullable=nullable, **kwargs)
+
+    @classmethod
+    def ib_list_of_date(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib_list_of_generic(date, nullable=nullable, **kwargs)
+
+    @classmethod
+    def ib_list_of_datetime(cls, nullable=True, **kwargs):
+        """
+        """
+        return cls._typed_ib_list_of_generic(datetime, nullable=nullable, **kwargs)
+
+    # --------------------------------------------------------------------------
+    # Nested Type
+    # --------------------------------------------------------------------------
     @classmethod
     def ib_nested(cls, **kwargs):
+        """
+        .. note::
+
+            nested object has default value ``None``, so it has to put it after
+            those attribute doesn't has default value.
+        """
         if "converter" not in kwargs:
             kwargs["converter"] = cls.from_dict
         if "validator" not in kwargs:
-            kwargs["validator"] = attr.validators.optional(
-                attr.validators.instance_of(cls)
+            kwargs["validator"] = vs.optional(
+                vs.instance_of(cls)
             )
         if "default" not in kwargs:
             kwargs["default"] = None
-        return attr.ib(**kwargs)
+        return attr.field(**kwargs)
 
     @classmethod
     def ib_list_of_nested(cls, **kwargs):
+        """
+        """
         if "converter" not in kwargs:
             kwargs["converter"] = cls._from_list
         if "validator" not in kwargs:
-            kwargs["validator"] = attr.validators.deep_iterable(
-                member_validator=attr.validators.instance_of(cls),
-                iterable_validator=attr.validators.instance_of(list),
+            kwargs["validator"] = vs.deep_iterable(
+                member_validator=vs.instance_of(cls),
+                iterable_validator=vs.instance_of(list),
             )
         if "factory" not in kwargs:
             kwargs["factory"] = list
-        return attr.ib(**kwargs)
+        return attr.field(**kwargs)
 
 
 DictClass = dict

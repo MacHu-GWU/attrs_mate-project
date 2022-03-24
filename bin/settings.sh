@@ -21,8 +21,8 @@ github_repo_name="attrs_mate-project"
 # Python
 package_name="attrs_mate"
 py_ver_major="3"
-py_ver_minor="7"
-py_ver_micro="9"
+py_ver_minor="8"
+py_ver_micro="11"
 use_pyenv="N" # "Y" or "N"
 supported_py_versions="3.6.2 3.7.9 3.8.6" # e.g: "2.7.13 3.6.2"
 

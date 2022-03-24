@@ -4,7 +4,7 @@ import pytest
 from attrs_mate import attr, LazyClass
 
 
-@attr.s
+@attr.define
 class User(LazyClass):
     """
     This also works::
@@ -18,11 +18,11 @@ class User(LazyClass):
                 self.uuid_called_count = uuid_called_count
                 self.fullname_called_count = fullname_called_count
     """
-    id = attr.ib()
-    lastname = attr.ib()
-    firstname = attr.ib()
-    uuid_called_count = attr.ib(default=0)
-    fullname_called_count = attr.ib(default=0)
+    id = attr.field()
+    lastname = attr.field()
+    firstname = attr.field()
+    uuid_called_count = attr.field(default=0)
+    fullname_called_count = attr.field(default=0)
 
     @LazyClass.lazyproperty
     def uuid(self):
@@ -55,9 +55,9 @@ class TestLazyClassSampleUsage:
         assert user3.fullname_called_count == 0
 
 
-@attr.s
+@attr.define
 class Foo(LazyClass):
-    id = attr.ib()
+    id = attr.field()
 
 
 class TestLazyClassWrongUsage:
