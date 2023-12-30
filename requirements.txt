@@ -1,2 +1,2 @@
 # Core dependencies goes here
-attrs>=20.1.0
+attrs>=20.1.0 # this is the first version support modern API: import attrs; attrs.define

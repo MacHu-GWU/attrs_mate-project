@@ -8,6 +8,7 @@ This module implements:
 """
 
 from typing import TypeVar, List, Union, Dict, OrderedDict, Any
+import warnings
 import collections
 from datetime import date, datetime
 
@@ -61,8 +62,8 @@ class AttrsClass:
     @classmethod
     def from_dict(
         cls,
-        dct_or_obj: Union[Dict[str, Any], 'AttrsClass', None],
-    ) -> Union['AttrsClass', None]:
+        dct_or_obj: Union[Dict[str, Any], "AttrsClass", None],
+    ) -> Union["AttrsClass", None]:
         """
         Construct an instance from dictionary data.
         """
@@ -78,8 +79,8 @@ class AttrsClass:
     @classmethod
     def _from_list(
         cls,
-        list_of_dct_or_obj: List[Union[Dict[str, Any], 'AttrsClass', None]],
-    ) -> List[Union['AttrsClass', None]]:
+        list_of_dct_or_obj: List[Union[Dict[str, Any], "AttrsClass", None]],
+    ) -> List[Union["AttrsClass", None]]:
         """
         Construct list of instance from list of dictionary data.
         """
@@ -94,55 +95,42 @@ class AttrsClass:
     # Generic Type
     # --------------------------------------------------------------------------
     @classmethod
-    def ib_generic(
-        cls,
-        type_: T,
-        nullable=True,
-        **kwargs
-    ):
+    def ib_generic(cls, type_: T, nullable=True, **kwargs):
         if "validator" not in kwargs:
             if nullable:
-                kwargs["validator"] = vs.optional(
-                    vs.instance_of(type_)
-                )
+                kwargs["validator"] = vs.optional(vs.instance_of(type_))
             else:
                 kwargs["validator"] = vs.instance_of(type_)
         return attr.field(**kwargs)
 
     @classmethod
     def ib_str(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_generic(str, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_int(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_generic(int, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_float(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_generic(float, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_bool(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_generic(bool, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_date(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_generic(date, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_datetime(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_generic(datetime, nullable=nullable, **kwargs)
 
     # --------------------------------------------------------------------------
@@ -150,38 +138,29 @@ class AttrsClass:
     # --------------------------------------------------------------------------
     @classmethod
     def ib_list(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_generic(list, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_tuple(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_generic(tuple, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_set(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_generic(set, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_dict(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_generic(dict, nullable=nullable, **kwargs)
 
     # --------------------------------------------------------------------------
     # List of Generic Type
     # --------------------------------------------------------------------------
     @classmethod
-    def ib_list_of_generic(
-        cls,
-        member_type: T,
-        nullable=True,
-        **kwargs
-    ):
+    def ib_list_of_generic(cls, member_type: T, nullable=True, **kwargs):
         if "validator" not in kwargs:
             if nullable:
                 kwargs["validator"] = vs.optional(
@@ -200,38 +179,32 @@ class AttrsClass:
 
     @classmethod
     def ib_list_of_str(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_list_of_generic(str, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_list_of_int(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_list_of_generic(int, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_list_of_float(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_list_of_generic(float, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_list_of_bool(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_list_of_generic(bool, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_list_of_date(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_list_of_generic(date, nullable=nullable, **kwargs)
 
     @classmethod
     def ib_list_of_datetime(cls, nullable=True, **kwargs):
-        """
-        """
+        """ """
         return cls.ib_list_of_generic(datetime, nullable=nullable, **kwargs)
 
     # --------------------------------------------------------------------------
@@ -239,15 +212,9 @@ class AttrsClass:
     # --------------------------------------------------------------------------
     @classmethod
     def ib_dict_of_generic(
-        cls,
-        key_type: K,
-        value_type: V,
-        nullable=True,
-        value_nullable=True,
-        **kwargs
+        cls, key_type: K, value_type: V, nullable=True, value_nullable=True, **kwargs
     ):
-        """
-        """
+        """ """
         if "validator" not in kwargs:
             if value_nullable:
                 key_validator = vs.optional(vs.instance_of(key_type))
@@ -284,17 +251,14 @@ class AttrsClass:
         if "converter" not in kwargs:
             kwargs["converter"] = cls.from_dict
         if "validator" not in kwargs:
-            kwargs["validator"] = vs.optional(
-                vs.instance_of(cls)
-            )
+            kwargs["validator"] = vs.optional(vs.instance_of(cls))
         if "default" not in kwargs:
             kwargs["default"] = None
         return attr.field(**kwargs)
 
     @classmethod
     def ib_list_of_nested(cls, **kwargs):
-        """
-        """
+        """ """
         if "converter" not in kwargs:
             kwargs["converter"] = cls._from_list
         if "validator" not in kwargs:
@@ -341,7 +305,13 @@ class LazyClass(AttrsClass):
 
     - 8.10 使用延迟计算属性: https://python-cookbook-3rd-edition.readthedocs.io/zh_CN/latest/c08/p10_using_lazily_computed_properties.html
     - 8.25 创建缓存实例: https://python-cookbook-3rd-edition.readthedocs.io/zh_CN/latest/c08/p25_creating_cached_instances.html
+
+    .. deprecated:: 1.2.X
+
+        introduced cached property >=3.8, which is better than this
+        if <3.7, you can use https://pypi.org/project/cached-property/
     """
+
     _instance_cache = DictClass()
 
     class lazyproperty(object):
@@ -361,6 +331,10 @@ class LazyClass(AttrsClass):
         """
 
         def __init__(self, func):
+            warnings.warn(
+                "deprecated, will be removed in 1.2.X, use cached_property instead",
+                DeprecationWarning,
+            )
             self.func = func
 
         def __get__(self, instance, cls):
