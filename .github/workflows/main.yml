@@ -39,6 +39,7 @@ jobs:
           python -VV
           python -m site
           python -m pip install --upgrade pip setuptools wheel virtualenv
+          echo attrs==${{ matrix.attrs-version }}
           pip install attrs==${{ matrix.attrs-version }}
           pip install -r requirements-test.txt
           pip install .
@@ -47,6 +48,7 @@ jobs:
         run: |
           python -m site
           python -m pip install --upgrade pip setuptools wheel virtualenv
+          echo attrs==${{ matrix.attrs-version }}
           pip install attrs==${{ matrix.attrs-version }}
           pip install -r requirements-test.txt
           pip install .
