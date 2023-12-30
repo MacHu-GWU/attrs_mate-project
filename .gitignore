@@ -1,7 +1,6 @@
 # User Settings
-attrs_mate_venv/
 attrs_mate.egg-info/
-attrs_mate-*/
+tmp/
 
 
 # Byte-compiled / optimized / DLL files
@@ -70,7 +69,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+docs/build/
 
 # PyBuilder
 target/

@@ -1,1 +1,2 @@
+# Core dependencies goes here
 attrs>=20.1.0

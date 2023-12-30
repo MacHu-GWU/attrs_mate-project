@@ -1,9 +1,13 @@
 # Coverage.py is a tool for measuring code coverage of Python programs.
-# for more info: https://coverage.readthedocs.io/en/coverage-4.4.1/config.html
+# for more info: https://coverage.readthedocs.io/en/latest/config.html
 [run]
 omit =
-    attrs_mate/pkg/*
-    attrs_mate/zzz_ezinstall.py
+    attrs_mate/docs/*
+    attrs_mate/tests/*
+    attrs_mate/vendor/*
+    attrs_mate/_version.py
+    attrs_mate/cli.py
+    attrs_mate/paths.py
 
 [report]
 # Regexes for lines to exclude from consideration

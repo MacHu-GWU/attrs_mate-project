@@ -1,9 +1,9 @@
 
 .. image:: https://github.com/MacHu-GWU/attrs_mate-project/workflows/CI/badge.svg
-    :target: https://github.com/MacHu-GWU/attrs_mate-project/actions?query=workflow:CI
+    :target: https://github.com/MacHu-GWU/attrs-mate-project/actions?query=workflow:CI
 
 .. image:: https://codecov.io/gh/MacHu-GWU/attrs_mate-project/branch/master/graph/badge.svg
-  :target: https://codecov.io/gh/MacHu-GWU/attrs_mate-project
+  :target: https://codecov.io/gh/MacHu-GWU/attrs-mate-project
 
 .. image:: https://img.shields.io/pypi/v/attrs_mate.svg
     :target: https://pypi.python.org/pypi/attrs_mate
@@ -14,19 +14,22 @@
 .. image:: https://img.shields.io/pypi/pyversions/attrs_mate.svg
     :target: https://pypi.python.org/pypi/attrs_mate
 
+.. image:: https://img.shields.io/badge/Release_History!--None.svg?style=social
+    :target: https://github.com/MacHu-GWU/attrs_mate-project/blob/main/release-history.rst
+
 .. image:: https://img.shields.io/badge/STAR_Me_on_GitHub!--None.svg?style=social
     :target: https://github.com/MacHu-GWU/attrs_mate-project
 
 ------
 
 .. image:: https://img.shields.io/badge/Link-Document-orange.svg
-      :target: https://attrs_mate.readthedocs.io/index.html
+      :target: https://attrs-mate.readthedocs.io/index.html
 
 .. image:: https://img.shields.io/badge/Link-API-orange.svg
-      :target: https://attrs_mate.readthedocs.io/py-modindex.html
+      :target: https://attrs-mate.readthedocs.io/py-modindex.html
 
 .. image:: https://img.shields.io/badge/Link-Source_Code-blue.svg
-      :target: https://attrs_mate.readthedocs.io/py-modindex.html
+      :target: https://attrs-mate.readthedocs.io/py-modindex.html
 
 .. image:: https://img.shields.io/badge/Link-Install-blue.svg
       :target: `install`_
