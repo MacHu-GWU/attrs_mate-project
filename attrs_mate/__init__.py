@@ -12,6 +12,9 @@ __github_username__ = "MacHu-GWU"
 
 
 try:
-    from .mate import attr, AttrsClass, LazyClass
+    from .mate import attr
+    from .mate import attrs
+    from .mate import AttrsClass
+    from .mate import LazyClass
 except ImportError:  # pragma: no cover
     pass

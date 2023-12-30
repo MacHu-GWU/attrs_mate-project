@@ -13,6 +13,8 @@ from datetime import date, datetime
 
 import attr
 import attr.validators as vs
+import attrs
+
 
 T = TypeVar("T")
 K = TypeVar("K")
