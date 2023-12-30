@@ -7,8 +7,8 @@ This module implements:
 - :class:`LazyClass`
 """
 
+from typing import TypeVar, List, Union, Dict, OrderedDict, Any
 import collections
-from typing import TypeVar, List, Union
 from datetime import date, datetime
 
 import attr
@@ -21,8 +21,8 @@ K = TypeVar("K")
 V = TypeVar("V")
 
 
-@attr.define
-class AttrsClass(object):
+@attrs.define
+class AttrsClass:
     """
     A mixins class provideing more utility methods.
     """
@@ -46,13 +46,13 @@ class AttrsClass(object):
         """
         return list(zip(self.keys(), self.values()))
 
-    def to_dict(self):
+    def to_dict(self) -> Dict[str, Any]:
         """
         Convert to dictionary.
         """
         return attr.asdict(self)
 
-    def to_OrderedDict(self):
+    def to_OrderedDict(self) -> OrderedDict[str, Any]:
         """
         Convert to ordered dictionary.
         """
@@ -61,7 +61,7 @@ class AttrsClass(object):
     @classmethod
     def from_dict(
         cls,
-        dct_or_obj: Union[dict, 'AttrsClass', None],
+        dct_or_obj: Union[Dict[str, Any], 'AttrsClass', None],
     ) -> Union['AttrsClass', None]:
         """
         Construct an instance from dictionary data.
@@ -78,7 +78,7 @@ class AttrsClass(object):
     @classmethod
     def _from_list(
         cls,
-        list_of_dct_or_obj: List[Union[dict, 'AttrsClass', None]],
+        list_of_dct_or_obj: List[Union[Dict[str, Any], 'AttrsClass', None]],
     ) -> List[Union['AttrsClass', None]]:
         """
         Construct list of instance from list of dictionary data.

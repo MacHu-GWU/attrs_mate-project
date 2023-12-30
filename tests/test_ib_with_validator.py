@@ -2,7 +2,7 @@
 
 import pytest
 from datetime import date, datetime
-import attr
+import attrs
 from attrs_mate.mate import AttrsClass
 
 
@@ -10,13 +10,13 @@ class User:
     pass
 
 
-@attr.define
+@attrs.define
 class Invalid:
     pass
 
 
 def test_ib_generic():
-    @attr.define
+    @attrs.define
     class Data(AttrsClass):
         ib_str = AttrsClass.ib_str()
         ib_int = AttrsClass.ib_int()
@@ -38,25 +38,25 @@ def test_ib_generic():
     invalid = Invalid()
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_str=invalid)
+        attrs.evolve(data, ib_str=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_int=invalid)
+        attrs.evolve(data, ib_int=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_float=invalid)
+        attrs.evolve(data, ib_float=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_bool=invalid)
+        attrs.evolve(data, ib_bool=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_date=invalid)
+        attrs.evolve(data, ib_date=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_datetime=invalid)
+        attrs.evolve(data, ib_datetime=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_user=invalid)
+        attrs.evolve(data, ib_user=invalid)
 
     # None is OK
     data = Data(
@@ -70,7 +70,7 @@ def test_ib_generic():
     )
 
     # None is NOT OK
-    @attr.define
+    @attrs.define
     class DataNotNullable(AttrsClass):
         v = AttrsClass.ib_str(nullable=False)
 
@@ -79,7 +79,7 @@ def test_ib_generic():
 
 
 def test_ib_collection():
-    @attr.define
+    @attrs.define
     class Data(AttrsClass):
         ib_list = AttrsClass.ib_list()
         ib_tuple = AttrsClass.ib_tuple()
@@ -95,16 +95,16 @@ def test_ib_collection():
     invalid = Invalid()
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_list=invalid)
+        attrs.evolve(data, ib_list=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_tuple=invalid)
+        attrs.evolve(data, ib_tuple=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_set=invalid)
+        attrs.evolve(data, ib_set=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_dict=invalid)
+        attrs.evolve(data, ib_dict=invalid)
 
     # None is OK
     data = Data(
@@ -115,7 +115,7 @@ def test_ib_collection():
     )
 
     # None is NOT OK
-    @attr.define
+    @attrs.define
     class DataNotNullable(AttrsClass):
         v = AttrsClass.ib_list(nullable=False)
 
@@ -124,7 +124,7 @@ def test_ib_collection():
 
 
 def test_ib_list_of_generic():
-    @attr.define
+    @attrs.define
     class Data(AttrsClass):
         ib_str = AttrsClass.ib_list_of_str()
         ib_int = AttrsClass.ib_list_of_int()
@@ -146,25 +146,25 @@ def test_ib_list_of_generic():
     invalid = Invalid()
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_str=invalid)
+        attrs.evolve(data, ib_str=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_int=invalid)
+        attrs.evolve(data, ib_int=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_float=invalid)
+        attrs.evolve(data, ib_float=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_bool=invalid)
+        attrs.evolve(data, ib_bool=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_date=invalid)
+        attrs.evolve(data, ib_date=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_datetime=invalid)
+        attrs.evolve(data, ib_datetime=invalid)
 
     with pytest.raises(TypeError):
-        attr.evolve(data, ib_user=invalid)
+        attrs.evolve(data, ib_user=invalid)
 
     data = Data(
         ib_str=None,
@@ -176,7 +176,7 @@ def test_ib_list_of_generic():
         ib_user=None
     )
 
-    @attr.define
+    @attrs.define
     class DataNotNullable(AttrsClass):
         v = AttrsClass.ib_list_of_str(nullable=False)
 
@@ -185,7 +185,7 @@ def test_ib_list_of_generic():
 
 
 def test_ib_dict_of_generic():
-    @attr.define
+    @attrs.define
     class Data(AttrsClass):
         mapper = AttrsClass.ib_dict_of_generic(key_type=str, value_type=User)
 
@@ -202,7 +202,7 @@ def test_ib_dict_of_generic():
     Data(mapper=dict(a=None))
 
     # None is NOT OK
-    @attr.define
+    @attrs.define
     class DataNotNullable(AttrsClass):
         mapper = AttrsClass.ib_dict_of_generic(key_type=str, value_type=User, nullable=False)
 
@@ -210,7 +210,7 @@ def test_ib_dict_of_generic():
         DataNotNullable(mapper=None)
 
     # None is NOT OK
-    @attr.define
+    @attrs.define
     class DataNotNullable(AttrsClass):
         mapper = AttrsClass.ib_dict_of_generic(key_type=str, value_type=User, nullable=False, value_nullable=False)
 
@@ -219,7 +219,7 @@ def test_ib_dict_of_generic():
 
 
 def test_additional_kwargs():
-    @attr.define
+    @attrs.define
     class Data(AttrsClass):
         ib_int = AttrsClass.ib_int(default=0)
 

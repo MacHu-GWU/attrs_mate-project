@@ -2,20 +2,20 @@
 
 import pytest
 
-import attr
+import attrs
 from attrs_mate.mate import AttrsClass
 from collections import OrderedDict
 
 
-@attr.define
+@attrs.define
 class User(AttrsClass):
-    id = attr.field()
-    name = attr.field()
+    id = attrs.field()
+    name = attrs.field()
 
 
-@attr.define
+@attrs.define
 class DBUser(User):
-    role = attr.field()
+    role = attrs.field()
 
 
 def test():
