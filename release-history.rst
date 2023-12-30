@@ -26,6 +26,10 @@ X.Y.Z (TODO)
 
 - Add full support to attrs new style API.
 
+**Miscellaneous**
+
+- Requires ``attrs>=21.3.0``.
+
 
 1.0.2 (2022-03-24)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

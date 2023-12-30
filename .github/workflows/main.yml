@@ -12,14 +12,14 @@ on:
 
 jobs:
   tests:
-    name: "${{ matrix.os }} Python ${{ matrix.python-version }} attrs ${{ matrix.python-version }}"
+    name: "${{ matrix.os }} Python ${{ matrix.python-version }} attrs ${{ matrix.attrs-version }}"
     runs-on: "${{ matrix.os }}" # for all available VM runtime, see this: https://docs.github.com/en/free-pro-team@latest/actions/reference/specifications-for-github-hosted-runners
     env: # define environment variables
       USING_COVERAGE: "3.7,3.8,3.9,3.10,3.11,3.12"
     strategy:
       matrix:
-#        os: ["ubuntu-latest", "windows-latest"]
-        os: ["ubuntu-latest", ] # for debug only
+        os: ["ubuntu-latest", "windows-latest"]
+#        os: ["ubuntu-latest", ] # for debug only
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
 #        python-version: ["3.7", ] # for debug only
         attrs-version: ["21.3.0", "22.1.0", "23.1.0"]
