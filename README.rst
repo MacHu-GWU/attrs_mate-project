@@ -15,7 +15,7 @@
     :target: https://pypi.python.org/pypi/attrs_mate
 
 .. image:: https://img.shields.io/badge/Release_History!--None.svg?style=social
-    :target: https://github.com/MacHu-GWU/attrs_mate-project/blob/main/release-history.rst
+    :target: https://github.com/MacHu-GWU/attrs_mate-project/blob/master/release-history.rst
 
 .. image:: https://img.shields.io/badge/STAR_Me_on_GitHub!--None.svg?style=social
     :target: https://github.com/MacHu-GWU/attrs_mate-project
@@ -49,6 +49,7 @@
 
 Welcome to ``attrs_mate`` Documentation
 ==============================================================================
+📔 See `Full Documentation HERE <https://attrs-mate.readthedocs.io/index.html>`_.
 
 `attrs <https://www.attrs.org/en/stable/index.html>`_ makes writing class a lot of more fun!
 

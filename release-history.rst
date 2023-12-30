@@ -4,7 +4,7 @@ Release and Version History
 ==============================================================================
 
 
-1.0.3 (TODO)
+X.Y.Z (TODO)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
 
@@ -13,6 +13,18 @@ Release and Version History
 **Bugfixes**
 
 **Miscellaneous**
+
+
+1.1.1 (2023-12-30)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**💥 Breaking Change**
+
+- Drop support for Python < 3.7 due to the attrs now only support 3.7+.
+- The ``LazyClass`` will be removed in 1.2.X. Use `cached_property <https://docs.python.org/3/library/functools.html#functools.cached_property>`_ instead.
+
+**Features and Improvements**
+
+- Add full support to attrs new style API.
 
 
 1.0.2 (2022-03-24)
