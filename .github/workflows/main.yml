@@ -22,7 +22,7 @@ jobs:
         os: ["ubuntu-latest", ] # for debug only
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
 #        python-version: ["3.7", ] # for debug only
-        attrs-version: ["20.1.0", "21.2.0", "22.1.0", "23.1.0"]
+        attrs-version: ["21.3.0", "22.1.0", "23.1.0"]
         exclude:
           - os: windows-latest # this is a useless exclude rules for demonstration use only
             python-version: 2.7
