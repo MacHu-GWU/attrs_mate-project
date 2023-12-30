@@ -183,6 +183,7 @@ if __name__ == "__main__":
         classifiers=CLASSIFIERS,
         platforms=PLATFORMS,
         license=LICENSE,
+        python_requires=">=3.7",
         install_requires=REQUIRES,
         extras_require=EXTRA_REQUIRE,
     )
