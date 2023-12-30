@@ -36,7 +36,7 @@ class People(AttrsClass):
 class TestNesting:
     def test_from_dict1(self):
         """
-        nested value is dict.
+        constructor data is generic dict
         """
         people = People(
             id=1,
@@ -58,7 +58,7 @@ class TestNesting:
 
     def test_from_dict2(self):
         """
-        nested value is already object
+        constructor data is already object
         """
         people = People(
             id=1,

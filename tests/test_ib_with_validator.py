@@ -85,12 +85,16 @@ def test_ib_collection():
         ib_tuple = AttrsClass.ib_tuple()
         ib_set = AttrsClass.ib_set()
         ib_dict = AttrsClass.ib_dict()
+        ib_user_list = AttrsClass.ib_list_of_generic(User)
+        ib_user_mapper = AttrsClass.ib_dict_of_generic(key_type=str, value_type=User)
 
     data = Data(
         ib_list=[1, 2],
         ib_tuple=(1, 2),
         ib_set={1, 2},
         ib_dict={"a": 1, "b": 2},
+        ib_user_list=[User(), User()],
+        ib_user_mapper={"a": User(), "b": User()},
     )
     invalid = Invalid()
 
@@ -112,6 +116,8 @@ def test_ib_collection():
         ib_tuple=None,
         ib_set=None,
         ib_dict=None,
+        ib_user_list=None,
+        ib_user_mapper=None,
     )
 
     # None is NOT OK
