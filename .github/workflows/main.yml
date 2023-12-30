@@ -34,24 +34,20 @@ jobs:
 
       - if: matrix.os == 'ubuntu-latest' # for condition steps, you should put if at begin, and use single quote for logical expression
         name: "Install dependencies on MacOS or Linux"
-        with:
-          attrs-version: "${{ matrix.attrs-version }}"
         run: |
           set -xe
           python -VV
           python -m site
           python -m pip install --upgrade pip setuptools wheel virtualenv
-          pip install -r attrs==${{ attrs-version }}
+          pip install -r attrs==${{ matrix.attrs-version }}
           pip install -r requirements-test.txt
           pip install .
       - if: matrix.os == 'windows-latest'
         name: "Install dependencies on Windows"
-        with:
-          attrs-version: "${{ matrix.attrs-version }}"
         run: |
           python -m site
           python -m pip install --upgrade pip setuptools wheel virtualenv
-          pip install -r attrs==${{ attrs-version }}
+          pip install -r attrs==${{ matrix.attrs-version }}
           pip install -r requirements-test.txt
           pip install .
       - name: "Run pytest"
