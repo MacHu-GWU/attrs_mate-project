@@ -15,6 +15,13 @@ X.Y.Z (TODO)
 **Miscellaneous**
 
 
+1.1.2 (2024-01-21)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Bugfixes**
+
+- Fix a bug that the deprecate warning should be raised when user attempt to use it, not when the module is imported.
+
+
 1.1.1 (2023-12-30)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **💥 Breaking Change**

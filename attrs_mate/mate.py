@@ -331,13 +331,13 @@ class LazyClass(AttrsClass):
         """
 
         def __init__(self, func):
+            self.func = func
+
+        def __get__(self, instance, cls):
             warnings.warn(
                 "deprecated, will be removed in 1.2.X, use cached_property instead",
                 DeprecationWarning,
             )
-            self.func = func
-
-        def __get__(self, instance, cls):
             if instance is None:  # pragma: no cover
                 return self
             else:

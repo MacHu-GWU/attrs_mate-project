@@ -1,8 +1,12 @@
 
-.. image:: https://github.com/MacHu-GWU/attrs_mate-project/workflows/CI/badge.svg
-    :target: https://github.com/MacHu-GWU/attrs-mate-project/actions?query=workflow:CI
+.. image:: https://readthedocs.org/projects/attrs_mate/badge/?version=latest
+    :target: https://attrs-mate.readthedocs.io/index.html
+    :alt: Documentation Status
 
-.. image:: https://codecov.io/gh/MacHu-GWU/attrs_mate-project/branch/master/graph/badge.svg
+.. image:: https://github.com/MacHu-GWU/attrs_mate-project/workflows/CI/badge.svg
+    :target: https://github.com/MacHu-GWU/attrs_mate-project/actions?query=workflow:CI
+
+.. .. image:: https://codecov.io/gh/MacHu-GWU/attrs_mate-project/branch/master/graph/badge.svg
   :target: https://codecov.io/gh/MacHu-GWU/attrs-mate-project
 
 .. image:: https://img.shields.io/pypi/v/attrs_mate.svg
