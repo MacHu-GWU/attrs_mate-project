@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import typing as T
 import pytest
+
 import attrs
 from attrs_mate import AttrsClass
 
@@ -11,6 +13,7 @@ class Profile(AttrsClass):
     """
     firstname, lastname, ssn are generic data type field.
     """
+
     firstname = AttrsClass.ib_str()
     lastname = AttrsClass.ib_str()
     ssn = AttrsClass.ib_str()
@@ -28,6 +31,7 @@ class People(AttrsClass):
     - ``profile`` is nested field.
     - ``degrees`` is collection type field.
     """
+
     id = AttrsClass.ib_int()
     profile = Profile.ib_nested()
     degrees = Degree.ib_list_of_nested()
@@ -103,6 +107,46 @@ class TestNesting:
         assert people == people1
         assert people1.profile is None
         assert people1.degrees == list()
+
+    def test_ib_map_of_nested(self):
+        @attrs.define
+        class Record(AttrsClass):
+            record_id: str = AttrsClass.ib_str()
+
+        @attrs.define
+        class Batch(AttrsClass):
+            batch_id: str = AttrsClass.ib_str()
+            records: T.Dict[str, Record] = Record.ib_map_of_nested(key_type=str, value_nullable=True)
+
+        batch = Batch(
+            batch_id="b-1",
+            records={"r-1": Record(record_id="r-1")},
+        )
+        batch_data = batch.to_dict()
+        batch1 = Batch.from_dict(batch_data)
+        batch1_data = batch.to_dict()
+        assert batch == batch1
+        assert batch_data == batch1_data
+
+        batch = Batch(
+            batch_id="b-1",
+            records={"r-1": None},
+        )
+        batch_data = batch.to_dict()
+        batch1 = Batch.from_dict(batch_data)
+        batch1_data = batch.to_dict()
+        assert batch == batch1
+        assert batch_data == batch1_data
+
+        batch = Batch(
+            batch_id="b-1",
+            records=None,
+        )
+        batch_data = batch.to_dict()
+        batch1 = Batch.from_dict(batch_data)
+        batch1_data = batch.to_dict()
+        assert batch == batch1
+        assert batch_data == batch1_data
 
 
 if __name__ == "__main__":

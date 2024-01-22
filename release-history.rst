@@ -15,8 +15,14 @@ X.Y.Z (TODO)
 **Miscellaneous**
 
 
-1.1.2 (2024-01-21)
+1.2.1 (2024-01-21)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Features and Improvements**
+
+- add :meth:`attrs_mate.mate.AttrsClass.ib_map_of_nested`
+- add :meth:`attrs_mate.mate.AttrsClass.from_list`
+- add :meth:`attrs_mate.mate.AttrsClass.from_mapper`
+
 **Bugfixes**
 
 - Fix a bug that the deprecate warning should be raised when user attempt to use it, not when the module is imported.

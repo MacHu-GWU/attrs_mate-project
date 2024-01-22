@@ -7,7 +7,7 @@ This module implements:
 - :class:`LazyClass`
 """
 
-from typing import TypeVar, List, Union, Dict, OrderedDict, Any
+from typing import TypeVar, List, Union, Dict, OrderedDict, Any, Optional
 import warnings
 import collections
 from datetime import date, datetime
@@ -77,7 +77,7 @@ class AttrsClass:
             raise TypeError
 
     @classmethod
-    def _from_list(
+    def from_list(
         cls,
         list_of_dct_or_obj: List[Union[Dict[str, Any], "AttrsClass", None]],
     ) -> List[Union["AttrsClass", None]]:
@@ -88,6 +88,24 @@ class AttrsClass:
             return [cls.from_dict(item) for item in list_of_dct_or_obj]
         elif list_of_dct_or_obj is None:
             return list()
+        else:  # pragma: no cover
+            raise TypeError
+
+    @classmethod
+    def from_mapper(
+        cls,
+        map_of_dct_or_obj: Optional[
+            Dict[str, Union[Dict[str, Any], "AttrsClass", None]]
+        ],
+    ) -> Optional[Dict[str, Union[Dict[str, Any], "AttrsClass", None]]]:
+        """
+        Construct dict of instance from dict of :class:`AttrsClass` liked data.
+        It could be a dictionary, an instance of this class, or None.
+        """
+        if isinstance(map_of_dct_or_obj, dict):
+            return {k: cls.from_dict(v) for k, v in map_of_dct_or_obj.items()}
+        elif map_of_dct_or_obj is None:
+            return None
         else:  # pragma: no cover
             raise TypeError
 
@@ -212,7 +230,12 @@ class AttrsClass:
     # --------------------------------------------------------------------------
     @classmethod
     def ib_dict_of_generic(
-        cls, key_type: K, value_type: V, nullable=True, value_nullable=True, **kwargs
+        cls,
+        key_type: K,
+        value_type: V,
+        nullable=True,
+        value_nullable=True,
+        **kwargs,
     ):
         """ """
         if "validator" not in kwargs:
@@ -243,6 +266,8 @@ class AttrsClass:
     @classmethod
     def ib_nested(cls, **kwargs):
         """
+        Declare a field that is another :class:`AttrsClass`.
+
         .. note::
 
             nested object has default value ``None``, so it has to put it after
@@ -258,9 +283,11 @@ class AttrsClass:
 
     @classmethod
     def ib_list_of_nested(cls, **kwargs):
-        """ """
+        """
+        Declare a field that is a list of other :class:`AttrsClass`.
+        """
         if "converter" not in kwargs:
-            kwargs["converter"] = cls._from_list
+            kwargs["converter"] = cls.from_list
         if "validator" not in kwargs:
             kwargs["validator"] = vs.deep_iterable(
                 member_validator=vs.instance_of(cls),
@@ -268,6 +295,43 @@ class AttrsClass:
             )
         if "factory" not in kwargs:
             kwargs["factory"] = list
+        return attr.field(**kwargs)
+
+    @classmethod
+    def ib_map_of_nested(
+        cls,
+        key_type: K,
+        nullable=True,
+        value_nullable=True,
+        **kwargs,
+    ):
+        """
+        Declare a field that is a mapper that key is any hashable value and
+         value is instance of :class:`AttrsClass`.
+        """
+        if "converter" not in kwargs:
+            kwargs["converter"] = cls.from_mapper
+        if "validator" not in kwargs:
+            if value_nullable:
+                key_validator = vs.optional(vs.instance_of(key_type))
+                value_validator = vs.optional(vs.instance_of(cls))
+            else:  # pragma: no cover
+                key_validator = vs.instance_of(key_type)
+                value_validator = vs.instance_of(cls)
+            if nullable:
+                kwargs["validator"] = vs.optional(
+                    vs.deep_mapping(
+                        key_validator=key_validator,
+                        value_validator=value_validator,
+                    )
+                )
+            else:  # pragma: no cover
+                kwargs["validator"] = vs.deep_mapping(
+                    key_validator=key_validator,
+                    value_validator=value_validator,
+                )
+        if "factory" not in kwargs:
+            kwargs["factory"] = dict
         return attr.field(**kwargs)
 
 
