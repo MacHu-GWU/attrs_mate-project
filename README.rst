@@ -3,7 +3,7 @@
     :target: https://attrs-mate.readthedocs.io/index.html
     :alt: Documentation Status
 
-.. image:: https://github.com/MacHu-GWU/attrs_mate-project/workflows/CI/badge.svg
+.. image:: https://github.com/MacHu-GWU/attrs_mate-project/actions/workflows/main.yml/badge.svg
     :target: https://github.com/MacHu-GWU/attrs_mate-project/actions?query=workflow:CI
 
 .. .. image:: https://codecov.io/gh/MacHu-GWU/attrs_mate-project/branch/master/graph/badge.svg
